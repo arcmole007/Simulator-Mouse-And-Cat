@@ -8,6 +8,7 @@ public class SuperMouse extends Mouse{
     Handler handler;
     private BufferedImage superMouseImage; 
 
+    public SuperMouse(int x, int y, ID id,Handler handler, SpriteSheet ss){
 
         super(x, y, id, handler, ss);
         superMouseImage = ss.grabImage(9, 1, 20, 20);
@@ -17,6 +18,7 @@ public class SuperMouse extends Mouse{
     public void tick(){
         move();
         outOfWall();
+        collision();
     }
 
     public void move() {
@@ -31,7 +33,7 @@ public class SuperMouse extends Mouse{
 
     public void collision(){
         for(int i = 0; i < handler.object.size(); i++){
-            GameObject tempObjec t = handler.object.get(i);
+            GameObject tempObject = handler.object.get(i);
 
             if(tempObject.getId() == ID.Wall){
                 if(getBounds().intersects(tempObject.getBounds())){
