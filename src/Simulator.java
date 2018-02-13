@@ -46,7 +46,7 @@ public class Simulator extends Canvas implements Runnable {
         ss = new SpriteSheet(spriteSheet);
        
         //Start Handling the maze
-        try (BufferedReader br = new BufferedReader(new FileReader("Maze.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("Maze2.txt"))) {
             String currentLine;
 
             while ((currentLine = br.readLine()) != null) {

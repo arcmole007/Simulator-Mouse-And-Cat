@@ -28,7 +28,6 @@ public class Mouse extends GameObject {
 
     public void tick() {
         move();
-       
         collision();
         transform();
     }
@@ -79,11 +78,11 @@ public class Mouse extends GameObject {
                GameObject tempObject = handler.object.get(i);
                if(tempObject.getId() == ID.Mouse){
                    System.out.println(tempObject.getX());
-                   handler.addObject(new SuperMouse((int)tempObject.getX(), (int)tempObject.getY(), ID.SuperMouse, handler,ss));
+                   //handler.addObject(new SuperMouse((int)tempObject.getX(), (int)tempObject.getY(), ID.SuperMouse, handler,ss));
                }
            }
 
-           handler.removeObject(this);
+           //handler.removeObject(this);
       
         }
     }

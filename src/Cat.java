@@ -4,10 +4,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import javax.lang.model.util.ElementScanner6;
-
-
-
 public class Cat extends GameObject {
 
     Handler handler;
@@ -23,6 +19,7 @@ public class Cat extends GameObject {
     private int down = 3;
 
     private int direction = -1;
+    private int counter = 0;
 
     private int speed = 4;
 
@@ -32,7 +29,7 @@ public class Cat extends GameObject {
         super(x, y, id, ss);
         this.handler = handler;
         direction = r.nextInt(4);
-
+        counter = 4;
         catImage = ss.grabImage(2, 1, 20, 20);
     }
 
@@ -47,41 +44,22 @@ public class Cat extends GameObject {
     public void move() {
        if(state == dumb){
            if(direction == right){
-                if(collision(x+speed, y)){
-                    x += speed;
-                }
-                else{
-                    direction = r.nextInt(4);
-                }
+                if(collision(x+speed, y)){x += speed;}
+                else{direction = r.nextInt(4);}
            }
            else if(direction == left){
-                if(collision(x-speed, y)){
-                    x -= speed;
-                }
-                else{
-                    direction = r.nextInt(4);
-                }
+                if(collision(x-speed, y)){x -= speed;}
+                else{direction = r.nextInt(4);}
            }
            else if(direction == up){
-                if(collision(x, y-speed)){
-                    y -= speed;
-                }
-                else{
-                    direction = r.nextInt(4);
-                }
+                if(collision(x, y-speed)){y -= speed;}
+                else{direction = r.nextInt(4);}
            }
            else if(direction == down){
-               if(collision(x, y+speed)){
-                   y += speed;
-               }
-               else{
-                   direction = r.nextInt(4);
-               }
-           }
-
-       }else if(state == smart){
-
-       }
+               if(collision(x, y+speed)){y += speed;}
+               else{direction = r.nextInt(4);}
+           } 
+        }else if(state == smart){}
     }
 
     public boolean collision(int nextX, int nextY) {
