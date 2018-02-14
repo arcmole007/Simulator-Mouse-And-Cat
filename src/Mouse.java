@@ -12,12 +12,16 @@ public class Mouse extends GameObject {
     Handler handler;
 
     private BufferedImage mouseImage;
+    private BufferedImage superMouseImage;
+
+    boolean SuperMouse = false;
     public int cheeseEat = 0;
 
     public Mouse(int x, int y, ID id, Handler handler,SpriteSheet ss) {
         super(x, y, id, ss);
         this.handler = handler;
         mouseImage = ss.grabImage(1, 1, 20, 20);
+        superMouseImage = ss.grabImage(9, 1, 20, 20);
        
 
     }
@@ -73,14 +77,9 @@ public class Mouse extends GameObject {
 
     public void transform(){
         if(cheeseEat == 4){
-     
-           for(int i = 0 ; i < handler.object.size();i++){
-               GameObject tempObject = handler.object.get(i);
-               if(tempObject.getId() == ID.Mouse){
-                   System.out.println(tempObject.getX());
-                   //handler.addObject(new SuperMouse((int)tempObject.getX(), (int)tempObject.getY(), ID.SuperMouse, handler,ss));
-               }
-           }
+            
+            this.id = ID.SuperMouse;
+       
 
            //handler.removeObject(this);
       
@@ -88,6 +87,12 @@ public class Mouse extends GameObject {
     }
 
     public void render(Graphics g) {
-        g.drawImage(mouseImage, x, y, null);
+        
+        if(this.id == ID.Mouse){
+            g.drawImage(mouseImage, x, y, null);
+        }
+        if(this.id == ID.SuperMouse){
+            g.drawImage(superMouseImage, x, y, null);
+        }
     }
 }

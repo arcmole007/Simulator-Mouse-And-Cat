@@ -21,7 +21,7 @@ public class Cat extends GameObject {
     private int direction = -1;
     private int counter = 0;
 
-    private int speed = 4;
+    private int speed = 1;
 
     public Random r = new Random();
 
