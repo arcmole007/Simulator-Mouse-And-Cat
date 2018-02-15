@@ -5,25 +5,38 @@ import java.awt.image.BufferedImage;
 import java.awt.Window;
 import java.util.Random;
 
-
-
 public class Mouse extends GameObject {
-    Random r = new Random();
-    Handler handler;
+    private Random r = new Random();
+    private Handler handler;
 
+    //Image----------------------------
     private BufferedImage mouseImage;
     private BufferedImage superMouseImage;
 
-    boolean SuperMouse = false;
+    //----Movement------------------------
+    private int right = 0;
+    private int left = 1;
+    private int up = 2;
+    private int down = 3;
+
+    private int direction = -1;
+    private int speed = 4;
+
+    private int counter = 0;
+    
+    // boolean SuperMouse = false;
+    private int dumb = 0;
+    private int smart = 1;
+
+    private int state = dumb;
     public int cheeseEat = 0;
 
     public Mouse(int x, int y, ID id, Handler handler,SpriteSheet ss) {
         super(x, y, id, ss);
         this.handler = handler;
+        direction = r.nextInt(4);
         mouseImage = ss.grabImage(1, 1, 20, 20);
         superMouseImage = ss.grabImage(9, 1, 20, 20);
-       
-
     }
 
     public Rectangle getBounds(){
@@ -32,42 +45,101 @@ public class Mouse extends GameObject {
 
     public void tick() {
         move();
-        collision();
+        eat();
         transform();
+        die();
+        
     }
 
     public void move() {
-        x += velX;
-        y += velY;
+        if(this.id == ID.Mouse){
+            if(direction == right){
+                if(collision(x+speed, y)){x += speed;}
+                else{direction = r.nextInt(4);}
+           }
+           else if(direction == left){
+                if(collision(x-speed, y)){x -= speed;}
+                else{direction = r.nextInt(4);}
+           }
+           else if(direction == up){
+                if(collision(x, y-speed)){y -= speed;}
+                else{direction = r.nextInt(4);}
+           }
+           else if(direction == down){
+               if(collision(x, y+speed)){y += speed;}
+               else{direction = r.nextInt(4);}
+           } 
+        }else if(this.id == ID.SuperMouse){
+            if(direction == right){
+                if(collision(x+speed, y)){
+                    x += speed;
+                    counter += speed;
+                    System.out.println(counter);
+                }
+                else{direction = r.nextInt(4);}
+           }
+           else if(direction == left){
+                if(collision(x-speed, y)){
+                    x -= speed;
+                    counter += speed;
+                    System.out.println(counter);
+                }
+                else{direction = r.nextInt(4);}
+           }
+           else if(direction == up){
+                if(collision(x, y-speed)){
+                    y -= speed;
+                    counter += speed;
+                    System.out.println(counter);
+                }
+                else{direction = r.nextInt(4);}
+           }
+           else if(direction == down){
+               if(collision(x, y+speed)){
+                   y += speed;
+                   counter += speed;
+                   System.out.println(counter);
+                }
+               else{direction = r.nextInt(4);}
+           }
+
+        }
+      
     }
 
-  
 
-    public void collision(){
+    public boolean collision(int nextX, int nextY){
+        Rectangle bounds = new Rectangle(nextX, nextY, 20, 20);
         for(int i = 0; i < handler.object.size(); i++){
             GameObject tempObject = handler.object.get(i);
 
             if(tempObject.getId() == ID.Wall){
-                if(getBounds().intersects(tempObject.getBounds())){
-                   x += velX * -1;
-                   y += velY * -1;
+                if(bounds.intersects(tempObject.getBounds())){
+                   return false;
                 }
             }
+        }
+        return true;
+    }
+
+    public void eat(){
+        for(int i = 0;i < handler.object.size();i++){
+            GameObject tempObject = handler.object.get(i);
+            if(tempObject.getId() == ID.Cheese){
+                if(getBounds().intersects(tempObject.getBounds())){
+                    cheeseEat++;
+                }
+            }
+        }
+    }
+    public void die(){
+        for(int i = 0;i < handler.object.size();i++){
+            GameObject tempObject = handler.object.get(i);
             if(tempObject.getId() == ID.Cat){
                 if(getBounds().intersects(tempObject.getBounds())){
-                  
                     handler.removeObject(this);
                 }
             }
-            if(tempObject.getId() == ID.Cheese){
-                if(getBounds().intersects(tempObject.getBounds())){
-                   
-                    cheeseEat++;
-                   
-                }
-            }
-            
-                
         }
     }
 
@@ -77,12 +149,12 @@ public class Mouse extends GameObject {
 
     public void transform(){
         if(cheeseEat == 4){
-            
             this.id = ID.SuperMouse;
-       
-
-           //handler.removeObject(this);
-      
+            cheeseEat = 0;
+        }
+        if(counter == 20){
+            this.id = ID.Mouse;
+            counter = 0;
         }
     }
 

@@ -35,7 +35,7 @@ public class Simulator extends Canvas implements Runnable {
 
     public Simulator() {
         handler = new Handler();
-        this.addKeyListener(new KeyInput(handler));
+        //this.addKeyListener(new KeyInput(handler));
         new Window(WIDTH, HEIGHT, "OOAD Assignment!", this);
 
         ArrayList<ArrayList<Integer>> tempLayout = new ArrayList<>();
